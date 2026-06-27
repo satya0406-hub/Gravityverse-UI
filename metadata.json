@@ -1,0 +1,8 @@
+{
+  "name": "GravityVerse",
+  "description": "An elite AI Neural platform powered by GravityVerse architecture. Features high-performance neural processing, advanced content creation, and secure data vaults.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
