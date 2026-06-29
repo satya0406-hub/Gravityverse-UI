@@ -19,30 +19,42 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Set up Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'npm'
-      - name: Install and Build
-        run: |
-          npm install
-          npm run build
+          cache: npm
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
         env:
+          VITE_CHAT_API_URL: ${{ secrets.VITE_CHAT_API_URL }}
+          VITE_MAIL_API_URL: ${{ secrets.VITE_MAIL_API_URL }}
+
           VITE_GEMINI_API_KEY: ${{ secrets.VITE_GEMINI_API_KEY || secrets.GEMINI_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY || secrets.VITE_GEMINI_API_KEY }}
+
           VITE_GA_MEASUREMENT_ID: ${{ secrets.VITE_GA_MEASUREMENT_ID || secrets.GA_MEASUREMENT_ID }}
-          VITE_API_BASE_URL: ${{ secrets.VITE_API_BASE_URL || secrets.API_BASE_URL }}
-      - name: Setup Pages
+          GA_MEASUREMENT_ID: ${{ secrets.GA_MEASUREMENT_ID || secrets.VITE_GA_MEASUREMENT_ID }}
+
+      - name: Setup GitHub Pages
         uses: actions/configure-pages@v4
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './dist'
+          path: ./dist
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
